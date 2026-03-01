@@ -1,0 +1,6 @@
+[build]
+publish = "website"
+command = "echo \"Static site deploy\""
+
+[build.environment]
+PYTHON_VERSION = "3.10.12"
