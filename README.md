@@ -65,4 +65,5 @@ cmdraAI/
 
 ## License
 
-MIT (or your preferred license file)
+MIT
+
