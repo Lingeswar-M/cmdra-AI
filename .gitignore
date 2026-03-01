@@ -1,0 +1,52 @@
+﻿# Logs directory
+*.log
+*.log.*
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environment
+venv/
+venv310/
+env/
+ENV/
+
+# PyInstaller
+build/
+dist/
+*.spec.bak
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.wav.tmp
+
+# Models cache (optional - comment out if you want to include)
+models/
+
+# Dataset (not needed for production)
+dataset/
+
+# Old/experimental files
+test_*.py
+*_old.py
+*_backup.py
+output.wav
+greetings1.mp3
+cmdra-*.wav
+
