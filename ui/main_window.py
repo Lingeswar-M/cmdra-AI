@@ -4,6 +4,7 @@ Text-only assistant interface with dynamic avatar + chat.
 """
 
 import logging
+import time
 
 from PyQt5.QtWidgets import (
     QApplication,
@@ -120,6 +121,7 @@ class MainWindow(QWidget):
         self.pending_confirmation_intent = None
         self.avatar_manager = AvatarManager()
         self.is_docked = False
+        self.last_input_edit_ts = 0.0
         self.expanded_size = (max(config.WINDOW_WIDTH, 420), max(config.WINDOW_HEIGHT, 620))
         self.dock_bubble = DockBubble()
         self.dock_bubble.clicked.connect(self.expand_from_dock)
@@ -264,6 +266,7 @@ class MainWindow(QWidget):
             """
         )
         self.command_input.returnPressed.connect(self.on_send_clicked)
+        self.command_input.textEdited.connect(self.on_input_edited)
 
         self.send_button = QPushButton("Send")
         self.send_button.setFixedWidth(100)
@@ -324,6 +327,9 @@ class MainWindow(QWidget):
                 return
 
         self.start_processing(text_input=text)
+
+    def on_input_edited(self, _text):
+        self.last_input_edit_ts = time.monotonic()
 
     def start_processing(self, text_input="", direct_intent=None):
         if self.is_docked:
@@ -467,6 +473,12 @@ class MainWindow(QWidget):
         if self.is_docked:
             return
         if self.worker and self.worker.isRunning():
+            return
+        if self.command_input.text().strip():
+            self.auto_dock_timer.start(config.AUTO_DOCK_TIMEOUT_MS)
+            return
+        if time.monotonic() - self.last_input_edit_ts < 2.0:
+            self.auto_dock_timer.start(config.AUTO_DOCK_TIMEOUT_MS)
             return
 
         self.is_docked = True
